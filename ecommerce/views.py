@@ -1,4 +1,3 @@
-
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -20,15 +19,17 @@ def about_page(request):
 
 def contact_page(request):
     # django inbuilt form
-    contact_form = ContactForm()
+    contact_form = ContactForm(request.POST or None)
     context = {
         "title": "Contact Page!!",
         "content": "welcome to the Contact page..",
         "form": contact_form
     }
-    if request.method == "POST":
-        #print(request.POST)
-        print("fullname is %s" %(request.POST.get('fullname')))
-        print("email is %s" %(request.POST.get('email')))
-        print("content is %s" %(request.POST.get('content')))
+    if contact_form.is_valid():
+        print("contact for has no errors", contact_form.cleaned_data)
+    # if request.method == "POST":
+    #     #print(request.POST)
+    #     print("fullname is %s" %(request.POST.get('fullname')))
+    #     print("email is %s" %(request.POST.get('email')))
+    #     print("content is %s" %(request.POST.get('content')))
     return render(request, "contact/view.html", context)
