@@ -1,2 +1,2 @@
 # django-projects
-django-projects for practicing web concepts
+django-projects for practicing django and web concepts.
