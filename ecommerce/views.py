@@ -2,6 +2,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
+from ecommerce.forms import ContactForm
+
 def home_page(request):
     context = {
         "title": "Home Page!!",
@@ -17,9 +19,12 @@ def about_page(request):
     return render(request, "about_page.html", context)
 
 def contact_page(request):
+    # django inbuilt form
+    contact_form = ContactForm()
     context = {
         "title": "Contact Page!!",
-        "content": "welcome to the Contact page.."
+        "content": "welcome to the Contact page..",
+        "form": contact_form
     }
     if request.method == "POST":
         #print(request.POST)
