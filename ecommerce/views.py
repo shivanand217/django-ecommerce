@@ -1,14 +1,20 @@
+# authentication
+from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-from ecommerce.forms import ContactForm, LoginForm
+from ecommerce.forms import ContactForm, LoginForm, RegisterForm
 
 def home_page(request):
     context = {
         "title": "Home Page!!",
         "content": "Welcome to the Home page.",
     }
-    return render(request,'home_page.html', context)
+    # check authentication
+    if request.user.is_authenticated():
+        redirect("/login")
+    else:
+        return render(request,'home_page.html', context)
 
 def about_page(request):
     context = {
@@ -35,13 +41,30 @@ def contact_page(request):
     return render(request, "contact/view.html", context)
 
 def login_page(request):
-    context = {}
     login_form = LoginForm(request.POST or None)
+    context = {
+        "form": login_form
+    }
     if login_form.is_valid():
         print(login_form.cleaned_data)
+        username = login_form.cleaned_data.get("username")
+        password = login_form.cleaned_data.get("password")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            print("logging in user ", username)
+            login(request, user)
+            context['form'] = LoginForm() # reinitializes a new form
+            # redirect to sucess page ...
+            return redirect("/")
+        else:
+            # Return an 'invalid login' error message
+            print("no such user exists...")
+            pass
     return render(request, "auth/login.html", context)
 
 def register_page(request):
     context = {}
-        
+    register_form = RegisterForm(request.POST or None)
+    if register_form.is_valid():
+        print(register_form.cleaned_data)
     return render(request, "auth/register.html", context)
