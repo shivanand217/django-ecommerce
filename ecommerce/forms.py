@@ -1,5 +1,6 @@
-
 from django import forms
+
+# builtin django forms are here
 
 class ContactForm(forms.Form):
 
@@ -24,3 +25,34 @@ class ContactForm(forms.Form):
         if not "gmail.com" in email:
             raise forms.ValidationError("Email has to be gmail.com")
         return email
+
+
+class LoginForm(forms.Form):
+ 
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={"class":"form-control", "id":"login_username",
+                                        "placeholder": "Username"})
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class":"form-control", "id":"login_password",
+                                            "placeholder": "Password"})
+    )
+
+class RegisterForm(forms.Form):
+
+    firstname = forms.CharField(
+        widget=forms.TextInput(attrs={"class":"form-control", "id":"register_firstname",
+                                        "placeholder":"FirstName"})
+    )
+    lastname = forms.CharField(
+        widget=forms.TextInput(attrs={"class":"form-control", "id":"register_lastname",
+                                        "placeholder":"LastName"})
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class":"form-control", "id":"register_password",
+                                            "placeholder":"Password"})
+    )
+    confirm_password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class":"form-control", "id":"register_confirm_password",
+                                            "placeholder":"Confirm Password"})
+    )
