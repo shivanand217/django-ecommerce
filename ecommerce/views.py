@@ -11,10 +11,10 @@ def home_page(request):
         "content": "Welcome to the Home page.",
     }
     # check authentication
-    if request.user.is_authenticated():
-        redirect("/login")
+    if request.user.is_authenticated() is not False:
+        redirect("/contact")
     else:
-        return render(request,'home_page.html', context)
+        return render(request, 'home_page.html', context)
 
 def about_page(request):
     context = {
@@ -46,20 +46,21 @@ def login_page(request):
         "form": login_form
     }
     if login_form.is_valid():
-        print(login_form.cleaned_data)
+        print("login form cleaned data is: ",login_form.cleaned_data)
         username = login_form.cleaned_data.get("username")
         password = login_form.cleaned_data.get("password")
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            print("logging in user ", username)
+            print("user is authenticated..",user)
             login(request, user)
             context['form'] = LoginForm() # reinitializes a new form
-            # redirect to sucess page ...
-            return redirect("/")
+            # redirect to landing page ...
+            return redirect('/')
         else:
             # Return an 'invalid login' error message
             print("no such user exists...")
-            pass
+            context['form'] = LoginForm() # reinitializes a new form
+            return redirect('/login')
     return render(request, "auth/login.html", context)
 
 def register_page(request):
