@@ -6,15 +6,15 @@ from django.shortcuts import render, redirect
 from ecommerce.forms import ContactForm, LoginForm, RegisterForm
 
 def home_page(request):
-    context = {
+    home_page_context = {
         "title": "Home Page!!",
         "content": "Welcome to the Home page.",
     }
     # check authentication
-    if request.user.is_authenticated() is not False:
-        redirect("/contact")
+    if request.user.is_authenticated():
+        return render(request, 'home_page.html', home_page_context)
     else:
-        return render(request, 'home_page.html', context)
+        return redirect('/login')
 
 def about_page(request):
     context = {
@@ -45,16 +45,20 @@ def login_page(request):
     context = {
         "form": login_form
     }
+    print("Is User authenticated ?",request.user.is_authenticated())
+    # if user is authenticated redirect him to home page
+    if request.user.is_authenticated():
+        print("user is",request.user)
+        return redirect('/')
     if login_form.is_valid():
-        print("login form cleaned data is: ",login_form.cleaned_data)
+        print("login form cleaned data is:",login_form.cleaned_data)
         username = login_form.cleaned_data.get("username")
         password = login_form.cleaned_data.get("password")
         user = authenticate(request, username=username, password=password)
+        print("user is ",user)
         if user is not None:
-            print("user is authenticated..",user)
-            login(request, user)
-            context['form'] = LoginForm() # reinitializes a new form
-            # redirect to landing page ...
+            login(request, user) # inbuilt login function
+            context['form'] = LoginForm(request.POST or None) # reinitializes a new form
             return redirect('/')
         else:
             # Return an 'invalid login' error message
@@ -64,8 +68,19 @@ def login_page(request):
     return render(request, "auth/login.html", context)
 
 def register_page(request):
-    context = {}
+    # check user authentication if user is already logged in then navigate him/her to the login page
+
     register_form = RegisterForm(request.POST or None)
+    register_page_context = {
+        "form": register_form
+    }
     if register_form.is_valid():
-        print(register_form.cleaned_data)
+        print("register form cleaned data is:",register_form.cleaned_data)
+        firstname = register_form.cleaned_data.get("firstname")
+        lastname = register_form.cleaned_data.get("lastname")
+        email = register_form.cleaned_data.get("email")
+        contact = register_form.cleaned_data.get("contact")
+        # print("user name is %s %s", % (firstname,lastname))        
+        register_page_context['form'] = RegisterForm(request.POST or None)
+
     return render(request, "auth/register.html", context)
