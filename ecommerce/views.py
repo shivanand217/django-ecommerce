@@ -1,5 +1,5 @@
 # authentication
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -8,10 +8,12 @@ from ecommerce.forms import ContactForm, LoginForm, RegisterForm
 def home_page(request):
     home_page_context = {
         "title": "Home Page!!",
-        "content": "Welcome to the Home page.",
+        "content": "Welcome to the Home page."
     }
     # check authentication
     if request.user.is_authenticated():
+        # show premium_content to the logined users
+        home_page_context["premium_content"] = "YEAHHH"
         return render(request, 'home_page.html', home_page_context)
     else:
         return redirect('/login')
@@ -26,26 +28,25 @@ def about_page(request):
 def contact_page(request):
     # django inbuilt form
     contact_form = ContactForm(request.POST or None)
-    context = {
+    contact_page_context = {
         "title": "Contact Page!!",
         "content": "welcome to the Contact page..",
         "form": contact_form
     }
     if contact_form.is_valid():
-        print("contact for has no errors", contact_form.cleaned_data)
-    # if request.method == "POST":
-    #     #print(request.POST)
-    #     print("fullname is %s" %(request.POST.get('fullname')))
-    #     print("email is %s" %(request.POST.get('email')))
-    #     print("content is %s" %(request.POST.get('content')))
-    return render(request, "contact/view.html", context)
+        print("contact form has no errors", contact_form.cleaned_data)
+    # check authentication
+    if request.user.is_authenticated():
+        return render(request, 'contact/view.html', contact_page_context)
+    else:
+        return redirect('/login')
 
 def login_page(request):
     login_form = LoginForm(request.POST or None)
     context = {
         "form": login_form
     }
-    print("Is User authenticated ?",request.user.is_authenticated())
+    print("Is User authenticated?",request.user.is_authenticated())
     # if user is authenticated redirect him to home page
     if request.user.is_authenticated():
         print("user is",request.user)
@@ -55,7 +56,6 @@ def login_page(request):
         username = login_form.cleaned_data.get("username")
         password = login_form.cleaned_data.get("password")
         user = authenticate(request, username=username, password=password)
-        print("user is ",user)
         if user is not None:
             login(request, user) # inbuilt login function
             context['form'] = LoginForm(request.POST or None) # reinitializes a new form
@@ -67,20 +67,22 @@ def login_page(request):
             return redirect('/login')
     return render(request, "auth/login.html", context)
 
+# get django built-in user_model
+User = get_user_model()
 def register_page(request):
-    # check user authentication if user is already logged in then navigate him/her to the login page
-
+    # check user authentication if user is already logged in then navigate him/her to the login page if authenticated.
     register_form = RegisterForm(request.POST or None)
     register_page_context = {
         "form": register_form
     }
+    # stuffs for form submission
     if register_form.is_valid():
         print("register form cleaned data is:",register_form.cleaned_data)
-        firstname = register_form.cleaned_data.get("firstname")
-        lastname = register_form.cleaned_data.get("lastname")
+        username = register_form.cleaned_data.get("username")
         email = register_form.cleaned_data.get("email")
-        contact = register_form.cleaned_data.get("contact")
-        # print("user name is %s %s", % (firstname,lastname))        
-        register_page_context['form'] = RegisterForm(request.POST or None)
-
-    return render(request, "auth/register.html", context)
+        password = register_form.cleaned_data.get("password")
+        new_user = User.objects.create_user(username, email, password)
+        new_user.save()
+        print(new_user)
+        return redirect('/register')
+    return render(request, 'auth/register.html', register_page_context)
