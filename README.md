@@ -1,2 +1,2 @@
-# django-projects
-django-projects for practicing django and web concepts.
+# django-ecommerce.
+an ecommerce wesite in django for practicing django and web concepts.
