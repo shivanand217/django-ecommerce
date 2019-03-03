@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from products.models import *
 
@@ -17,6 +17,10 @@ class ProductListView(ListView):
         # print(context)        
         return context
 
+class ProductDetailView(DetailView):
+    queryset = Product.objects.all()
+    template_name = "products/detail.html"
+
 # function based views
 def product_list_view(request):
     queryset = Product.objects.all()
@@ -25,3 +29,10 @@ def product_list_view(request):
     }
     return render(request, "products/list.html", context)
 
+def product_detail_view(request):
+    queryset = Product.objects.all()
+    context = {
+        'object_list': queryset
+    }
+    return render(request, "products/details.html")
+    

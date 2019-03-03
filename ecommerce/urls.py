@@ -19,7 +19,8 @@ from django.contrib import admin
 
 from ecommerce.views import (about_page, contact_page, home_page, login_page,
                              register_page)
-from products.views import ProductListView, product_list_view
+from products.views import (ProductDetailView, ProductListView,
+                            product_list_view)
 
 urlpatterns = [
     url(r'^$', home_page),
