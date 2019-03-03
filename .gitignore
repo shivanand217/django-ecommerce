@@ -2,6 +2,8 @@
 ecommerce/__pycache__/
 *.py[cod]
 *$py.class
+django_project_methodology.txt
+myvenv/
 
 # C extensions
 *.so
