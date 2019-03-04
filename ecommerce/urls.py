@@ -16,6 +16,8 @@ Including another URLconf
 
 from django.conf.urls import url
 from django.contrib import admin
+from django.conf.urls.static import static
+from django.conf import settings
 
 from ecommerce.views import (about_page, contact_page, home_page, login_page,
                              register_page)
@@ -34,3 +36,6 @@ urlpatterns = [
     url(r'^products/(?P<pk>\d+)/$', ProductDetailView.as_view()),
     url(r'^products-fbv/(?P<pk>\d+)/$', product_detail_view),
 ]
+
+# for media url
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
