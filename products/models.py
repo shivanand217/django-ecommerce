@@ -11,8 +11,8 @@ def get_filename_extension(filename):
     return name, extension
 
 def upload_image_path(instance, filename):
-    print(instance)
-    print(filename)
+    #print(instance)
+    #print(filename)
     new_filename = random.randint(1,400000)
     name, ext = get_filename_extension(filename)
     return new_filename
