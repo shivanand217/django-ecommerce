@@ -49,7 +49,7 @@ def login_page(request):
     print("Is User authenticated?",request.user.is_authenticated())
     # if user is authenticated redirect him to home page
     if request.user.is_authenticated():
-        print("user is",request.user)
+        #print("user is",request.user)
         return redirect('/')
     if login_form.is_valid():
         print("login form cleaned data is:",login_form.cleaned_data)
