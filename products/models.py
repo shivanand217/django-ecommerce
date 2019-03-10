@@ -6,16 +6,23 @@ from django.db import models
 
 def get_filename_extension(filename):
     base_name = os.path.basename(filename)
-    name, extension = os.path.splitext(filename)
-    print("name and extension are", name, extension)
-    return name, extension
+    name, ext = os.path.splitext(filename)
+    print("name and extension are", name, ext)
+    return name, ext
 
 def upload_image_path(instance, filename):
-    #print(instance)
-    #print(filename)
-    new_filename = random.randint(1,400000)
+    print(instance)
+    print(filename)
+    new_filename = random.randint(1,400000) # random integer
     name, ext = get_filename_extension(filename)
-    return new_filename
+    final_filename = '{new_filename}{ext}'.format(
+        new_filename=new_filename,
+        ext=ext
+    )
+    return "products/{new_filename}/{final_filename}".format(
+        new_filename=new_filename,
+        final_filename=final_filename
+    )
 
 class Product(models.Model):
     title = models.CharField(max_length=120)
