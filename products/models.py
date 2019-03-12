@@ -26,9 +26,13 @@ def upload_image_path(instance, filename):
 
 class Product(models.Model):
     title = models.CharField(max_length=120)
-    description = models.TextField() 
+    description = models.TextField(max_length=400) 
     price = models.DecimalField(decimal_places=2,max_digits=15,default=10.99)
-    image = models.FileField(null=True, blank=True, upload_to='products/')
+    image = models.ImageField(null=True, blank=True, upload_to='products/')
+    featured = models.BooleanField(default=False)
+    active = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_digital = models.BooleanField(default=False) # User library
     
     # __str__ function helps in defining the representation of the model
     # or it tells what that object is. 
