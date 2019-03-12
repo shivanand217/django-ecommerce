@@ -12,9 +12,9 @@ class ProductListView(ListView):
     queryset = Product.objects.all()
     template_name = "products/list.html"
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(ProductListView, self).dispatch(*args, **kwargs)
+    # @method_decorator(login_required)
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super(ProductListView, self).dispatch(request, *args, **kwargs)
 
     # to get context in class based views
     def get_context_data(self, *args, **kwargs):
@@ -26,9 +26,9 @@ class ProductDetailView(DetailView):
     queryset = Product.objects.all()
     template_name = "products/detail.html"
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(ProductDetailView, self).dispatch(*args, **kwargs)
+    # @method_decorator(login_required)
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super(ProductDetailView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProductDetailView, self).get_context_data(*args, **kwargs)
