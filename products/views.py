@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView
@@ -47,8 +48,25 @@ def product_list_view(request):
         return redirect('/login')
  
 def product_detail_view(request, pk=None, *args, **kwargs):
-    instance = get_object_or_404(Product, pk=pk)
-    #print(instance)
+    # Various queryset examples
+
+    #instance = get_object_or_404(Product, pk=pk)
+    # try: 
+    #     instance = Product.objects.get(id=pk)
+    # except Product.DoesNotExist:
+    #     print('no product here')
+    #     raise Http404("Product doesn't exist..")
+    # except:
+    #     print("huh?")
+
+    # pick the first instance in the returned queryset
+    qs = Product.objects.filter(id=pk)
+    print(qs)
+    if qs.exists() and qs.count() == 1:
+        instance = qs.first()
+    else:
+        raise Http404("Product doesn't exists..")
+
     context = {
         'object': instance
     }
