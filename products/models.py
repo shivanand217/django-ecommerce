@@ -24,6 +24,13 @@ def upload_image_path(instance, filename):
         final_filename=final_filename
     )
 
+class ProductManager(models.Manager):
+    def get_by_id(self, id):
+        qs = self.get_queryset().filter(id=id) # Product.objects == self.get_queryset()
+        if qs.count() == 1:
+            return qs.first()
+        return None
+
 class Product(models.Model):
     title = models.CharField(max_length=120)
     description = models.TextField(max_length=400) 
@@ -34,6 +41,8 @@ class Product(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     is_digital = models.BooleanField(default=False) # User library
     
+    objects = ProductManager()
+
     # __str__ function helps in defining the representation of the model
     # or it tells what that object is. 
     def __str__(self): # for python3
