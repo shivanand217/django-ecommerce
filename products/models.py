@@ -3,7 +3,6 @@ import os
 from django.db import models
 
 # Create your models here.
-
 def get_filename_extension(filename):
     base_name = os.path.basename(filename)
     name, ext = os.path.splitext(filename)
@@ -24,7 +23,23 @@ def upload_image_path(instance, filename):
         final_filename=final_filename
     )
 
-class ProductManager(models.Manager):
+class ProductQuerySet(models.query.QuerySet):
+    def active(self):
+        return self.filter(active=True)
+
+    def featured(self):
+        return self.filter(featured=True)
+
+class ProductManager(models.Manager):    
+    def get_queryset(self):
+        return ProductQuerySet(self.model, using=self._db)
+
+    def all(self):
+        return self.get_queryset().active()
+
+    def featured(self): # for calling Product.objects.featured()
+        return self.get_queryset().featured()
+
     def get_by_id(self, id):
         qs = self.get_queryset().filter(id=id) # Product.objects == self.get_queryset()
         if qs.count() == 1:
@@ -37,7 +52,7 @@ class Product(models.Model):
     price = models.DecimalField(decimal_places=2,max_digits=15,default=10.99)
     image = models.ImageField(null=True, blank=True, upload_to='products/')
     featured = models.BooleanField(default=False)
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     is_digital = models.BooleanField(default=False) # User library
     

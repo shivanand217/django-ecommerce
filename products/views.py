@@ -5,10 +5,26 @@ from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView
 from products.models import Product
 
-# Create your views here.
-# Add the views created here to your urls.py
-
+# Add the views created here to the urls.py
 # Class based views
+
+# Featured Products
+class ProductFeaturedListView(ListView):
+    template_name = "products/list.html"
+    
+    def get_queryset(self, *args, **kwargs):
+        request = self.request
+        print("featured user authenticated is",request.user.is_authenticated())
+        return Product.objects.featured() # get featured products list from Models Manager
+
+class ProductFeaturedDetailView(DetailView):
+    template_name = "products/featured-detail.html"
+
+    def get_queryset(self, *args, **kwargs):
+        request = self.request
+        return Product.objects.featured()
+
+# All Products
 class ProductListView(ListView):
     template_name = "products/list.html"
 
@@ -75,3 +91,4 @@ def product_detail_view(request, pk=None, *args, **kwargs):
         return render(request, "products/detail.html", context)
     else:
         return redirect('/login')
+        
