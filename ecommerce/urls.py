@@ -19,18 +19,32 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 
-from ecommerce.views import (about_page, contact_page, home_page, login_page,
-                             register_page)
-from products.views import (ProductDetailView, ProductListView,
-                            product_detail_view, product_list_view)
+from ecommerce.views import (
+    about_page, 
+    contact_page, 
+    home_page, 
+    login_page,
+    register_page
+    )
+    
+from products.views import (
+    ProductDetailView,
+    ProductListView,
+    product_detail_view,
+    product_list_view,
+    ProductFeaturedListView,
+    ProductFeaturedDetailView
+    )
 
 urlpatterns = [
     url(r'^$', home_page),
+    url(r'^admin/', admin.site.urls),
     url(r'^contact/$', contact_page),
     url(r'^about/$', about_page),
     url(r'^login/$', login_page),
     url(r'^register/$', register_page),
-    url(r'^admin/', admin.site.urls),
+    url(r'^featured/$', ProductFeaturedListView.as_view()),
+    url(r'^featured/(?P<pk>\d+)/$', ProductFeaturedDetailView.as_view()),
     url(r'^products/$', ProductListView.as_view()),
     url(r'^products-fbv/$', product_list_view),
     url(r'^products/(?P<pk>\d+)/$', ProductDetailView.as_view()),
