@@ -1,6 +1,8 @@
 import random
 import os
 from django.db import models
+from products.utils import unique_slug_generator
+from django.db.models.signals import pre_save, post_save
 
 # Create your models here.
 def get_filename_extension(filename):
@@ -56,7 +58,7 @@ class Product(models.Model):
     active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     is_digital = models.BooleanField(default=False)
-    
+
     objects = ProductManager()
 
     # __str__ function helps in defining the representation of the model
@@ -66,3 +68,9 @@ class Product(models.Model):
 
     def __unicode__(self): # for python2
         return self.title
+
+def product_pre_save_reciever(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+    
+pre_save.connect(product_pre_save_reciever, sender=Product)
