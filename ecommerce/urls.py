@@ -33,7 +33,8 @@ from products.views import (
     product_detail_view,
     product_list_view,
     ProductFeaturedListView,
-    ProductFeaturedDetailView
+    ProductFeaturedDetailView,
+    ProductDetailSlugView
     )
 
 urlpatterns = [
@@ -48,6 +49,7 @@ urlpatterns = [
     url(r'^products/$', ProductListView.as_view()),
     url(r'^products-fbv/$', product_list_view),
     url(r'^products/(?P<pk>\d+)/$', ProductDetailView.as_view()),
+    url(r'^products/(?P<slug>[\w-]+)/$', ProductDetailSlugView.as_view()),
     url(r'^products-fbv/(?P<pk>\d+)/$', product_detail_view),
 ]
 

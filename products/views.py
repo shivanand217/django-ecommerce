@@ -5,6 +5,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView
 from products.models import Product
 
+from products import utils
+
 # Add the views created here to the urls.py
 # Class based views
 
@@ -54,6 +56,26 @@ class ProductDetailView(DetailView):
             raise Http404("Product doesn't exist..")
         return instance
 
+class ProductDetailSlugView(DetailView):
+    queryset = Product.objects.all()
+    template_name = "products/detail.html"
+
+    def get_object(self, *args, **kwargs):
+        request = self.request
+        slug = self.kwargs.get('slug')
+        # instance = get_object_or_404(Product, slug=slug, active=True)
+        try:
+            instance = Product.objects.get(slug=slug, active=True)
+        except Product.DoesNotExist:
+            raise Http404("Not found..")
+        except Product.MultipleObjectsReturned:
+            qs = Product.objects.filter(slug=slug, active=True)
+            print("queryset has returned items",qs)
+            instance = qs.first()
+        except:
+            raise Http404("Nothing Here :(")
+        return instance
+
 # function based views
 def product_list_view(request):
     queryset = Product.objects.all()
@@ -91,4 +113,3 @@ def product_detail_view(request, pk=None, *args, **kwargs):
         return render(request, "products/detail.html", context)
     else:
         return redirect('/login')
-        
