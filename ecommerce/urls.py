@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
@@ -26,31 +26,15 @@ from ecommerce.views import (
     login_page,
     register_page
     )
-    
-from products.views import (
-    ProductDetailView,
-    ProductListView,
-    product_detail_view,
-    product_list_view,
-    ProductFeaturedListView,
-    ProductFeaturedDetailView,
-    ProductDetailSlugView
-    )
 
 urlpatterns = [
-    url(r'^$', home_page),
     url(r'^admin/', admin.site.urls),
+    url(r'^$', home_page),
     url(r'^contact/$', contact_page),
     url(r'^about/$', about_page),
     url(r'^login/$', login_page),
     url(r'^register/$', register_page),
-    url(r'^featured/$', ProductFeaturedListView.as_view()),
-    url(r'^featured/(?P<pk>\d+)/$', ProductFeaturedDetailView.as_view()),
-    url(r'^products/$', ProductListView.as_view()),
-    url(r'^products-fbv/$', product_list_view),
-    url(r'^products/(?P<pk>\d+)/$', ProductDetailView.as_view()),
-    url(r'^products/(?P<slug>[\w-]+)/$', ProductDetailSlugView.as_view()),
-    url(r'^products-fbv/(?P<pk>\d+)/$', product_detail_view),
+    url(r'', include("products.urls")),
 ]
 
 # for media url

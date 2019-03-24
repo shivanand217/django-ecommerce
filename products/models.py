@@ -61,6 +61,9 @@ class Product(models.Model):
 
     objects = ProductManager()
 
+    def get_absolute_url(self):
+        return "/products/{slug}/".format(slug=self.slug)
+    
     # __str__ function helps in defining the representation of the model
     # or it tells what that object is. 
     def __str__(self): # for python3
