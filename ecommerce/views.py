@@ -31,7 +31,7 @@ def contact_page(request):
     contact_page_context = {
         "title": "Contact Page!!",
         "content": "welcome to the Contact page..",
-        "form": contact_form
+        "form": contact_form,
     }
     if contact_form.is_valid():
         print("contact form has no errors", contact_form.cleaned_data)
