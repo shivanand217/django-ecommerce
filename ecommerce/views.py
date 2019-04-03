@@ -1,10 +1,13 @@
-# authentication
+# for authentication
 from django.contrib.auth import authenticate, login, get_user_model
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from ecommerce.forms import ContactForm, LoginForm, RegisterForm
 
+# Function based views
+
+# home view
 def home_page(request):
     home_page_context = {
         "title": "Home Page!!",
@@ -18,6 +21,7 @@ def home_page(request):
     else:
         return redirect('/login')
 
+# about view
 def about_page(request):
     context = {
         "title": "About Page!!",
@@ -25,6 +29,7 @@ def about_page(request):
     }
     return render(request, "about_page.html", context)
 
+# contact view
 def contact_page(request):
     # django inbuilt form
     contact_form = ContactForm(request.POST or None)
@@ -41,15 +46,16 @@ def contact_page(request):
     else:
         return redirect('/login')
 
+# login view
 def login_page(request):
     login_form = LoginForm(request.POST or None)
     context = {
         "form": login_form
     }
     print("Is User authenticated?",request.user.is_authenticated())
-    # if user is authenticated redirect him to home page
+    # if user is authenticated redirect to home page
     if request.user.is_authenticated():
-        #print("user is",request.user)
+        # print("user is",request.user)
         return redirect('/')
     if login_form.is_valid():
         print("login form cleaned data is:",login_form.cleaned_data)
@@ -67,8 +73,19 @@ def login_page(request):
             return redirect('/login')
     return render(request, "auth/login.html", context)
 
+# logout view
+def logout_page(request):
+    if request.user.is_authenticated():
+        print("user is",request.user)
+        logout(request)
+        redirect('/login')
+    else:
+        redirect('/login')
+
 # get django built-in user_model
 User = get_user_model()
+
+# register page view
 def register_page(request):
     # check user authentication if user is already logged in then navigate him/her to the login page if authenticated.
     register_form = RegisterForm(request.POST or None)
