@@ -34,7 +34,7 @@ urlpatterns = [
     url(r'^about/$', about_page),
     url(r'^login/$', login_page),
     url(r'^register/$', register_page),
-    url(r'', include("products.urls")),
+    url(r'', include("products.urls", namespace='products')),
 ]
 
 # for media url

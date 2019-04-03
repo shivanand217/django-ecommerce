@@ -3,6 +3,7 @@ import os
 from django.db import models
 from products.utils import unique_slug_generator
 from django.db.models.signals import pre_save, post_save
+from django.urls import reverse
 
 # Create your models here.
 def get_filename_extension(filename):
@@ -62,7 +63,8 @@ class Product(models.Model):
     objects = ProductManager()
 
     def get_absolute_url(self):
-        return "/products/{slug}/".format(slug=self.slug)
+        #return "/products/{slug}/".format(slug=self.slug)
+        return reverse("products:detail", kwargs={"slug": self.slug})
     
     # __str__ function helps in defining the representation of the model
     # or it tells what that object is. 
