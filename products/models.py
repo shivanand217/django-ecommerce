@@ -53,6 +53,7 @@ class Product(models.Model):
     title = models.CharField(max_length=120)
     slug = models.SlugField(blank=True, unique=True) # slug field for better readability
     description = models.TextField(max_length=400) 
+    offer_description = models.TextField(max_length=400, default='no offer')
     price = models.DecimalField(decimal_places=2,max_digits=15,default=10.99)
     image = models.ImageField(null=True, blank=True, upload_to='products/')
     featured = models.BooleanField(default=False)
