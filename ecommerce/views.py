@@ -1,5 +1,5 @@
 # for authentication
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -78,9 +78,9 @@ def logout_page(request):
     if request.user.is_authenticated():
         print("user is",request.user)
         logout(request)
-        redirect('/login')
+        return redirect('/login')
     else:
-        redirect('/login')
+        return redirect('/login')
 
 # get django built-in user_model
 User = get_user_model()
