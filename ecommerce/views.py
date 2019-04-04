@@ -25,7 +25,7 @@ def home_page(request):
 def about_page(request):
     context = {
         "title": "About Page!!",
-        "content": "welcome to the About page..",
+        "content": "",
     }
     return render(request, "about_page.html", context)
 
