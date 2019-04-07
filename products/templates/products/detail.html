@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {{ object.title }} <br/>
-    {{ object.description }} <br/>
-    <div class="container"> 
-        {% if object.image %}
-            <img src="{{ object.image.url }}" class="img-fluid" width="18%"/>
-        {% endif %}
+    <div class='container'>
+        <div class='row'>
+            <div class='col'>
+                <b>{{ object.title }}</b> <br/>
+                <b>{{ object.timestamp }}</b>
+                {{ object.description | linebreaks }} <br/>
+                {% if object.image %}
+                    <img src="{{ object.image.url }}" class="img-fluid" width="18%"/>
+                {% endif %} <br/> <br/>
+                <b>{{ object.offer_description }}</b> <br/>
+                <b>Price: {{ object.price }}</b>
+            </div>
+        </div>
     </div>
 {% endblock %}

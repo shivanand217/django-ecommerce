@@ -29,7 +29,7 @@ from ecommerce.views import (
 )
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls, name='admin'),
     url(r'^$', home_page, name='home'),
     url(r'^contact/$', contact_page, name='contact'),
     url(r'^about/$', about_page, name='about'),
