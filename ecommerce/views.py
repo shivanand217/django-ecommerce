@@ -16,7 +16,7 @@ def home_page(request):
     # check authentication
     if request.user.is_authenticated():
         # show premium_content to the logined users
-        home_page_context["premium_content"] = "YEAHHH"
+        home_page_context["premium_content"] = "The Secret Code is 1221u891"
         return render(request, 'home_page.html', home_page_context)
     else:
         return redirect('/login')
