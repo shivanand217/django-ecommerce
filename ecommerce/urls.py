@@ -18,6 +18,7 @@ from django.conf.urls import url,include
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.generic import TemplateView
 
 from ecommerce.views import (
     about_page, 
@@ -37,6 +38,7 @@ urlpatterns = [
     url(r'^logout/$', logout_page, name='logout'),
     url(r'^register/$', register_page, name='register'),
     url(r'', include("products.urls", namespace='products')),
+    url(r'^bootstrap/$', TemplateView.as_view(template_name='bootstrap/example.html')),
 ]
 
 # for media url
